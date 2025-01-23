@@ -29,20 +29,8 @@ jobs:
         uses: jfrog/setup-jfrog-cli@v2
         with:
           version: '2.73.2' # Updated version
-          server-id: 'artifactory-server'
-          url: ${{ secrets.JFROG_URL }}
-          username: ${{ secrets.JFROG_USERNAME }}
-          password: ${{ secrets.JFROG_PASSWORD }}
-
-      # Step 4: Install dependencies
-      - name: Install dependencies
-        run: npm install
-
-      # Step 5: Run build
-      - name: Build the project
-        run: npm run build
-
-      # Step 6: Configure JFrog CLI (explicitly)
+          
+   # Step 6: Configure JFrog CLI (explicitly)
       - name: Configure JFrog CLI
         run: |
           jf c add artifactory-server \
@@ -50,6 +38,17 @@ jobs:
             --user=${{ secrets.JFROG_USERNAME }} \
             --password=${{ secrets.JFROG_PASSWORD }} \
             --interactive=false
+
+      # Step 4: Install dependencies
+      - name: Install dependencies
+        run: jf npm install
+
+      # Step 5: Run build
+      - name: Build the project
+        run: jf npm run build
+
+   
+      
 
       # Step 7: Upload build output to Artifactory
       - name: Upload build output to Artifactory
