@@ -1,0 +1,69 @@
+name: Build and Publish to JFrog Artifactory
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Check out the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Node.js environment
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16' # Specify your required Node.js version
+
+      # Step 3: Set up JFrog CLI
+      - name: Set up JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v2
+        with:
+          version: '2.73.0' # Specify JFrog CLI version
+          server-id: 'artifactory-server'
+          url:  ${{ secrets.JFROG_URL }}
+          username: ${{ secrets.JFROG_USERNAME }}
+          password: ${{ secrets.JFROG_PASSWORD }}
+
+      # Step 4: Configure npm registry for Artifactory
+      - name: Configure npm registry
+        run: |
+          # Add Artifactory npm registry configuration
+          jfrog rt npm-config \
+            --repo=your-npm-repo \
+            --server-id-resolve=artifactory-server \
+            --server-id-deploy=artifactory-server
+
+          # Verify npm config
+          npm config get registry
+
+      # Step 5: Install dependencies from Artifactory
+      - name: Install dependencies
+        run: npm install
+        env:
+          JFROG_CLI_LOG_LEVEL: DEBUG
+
+      # Step 6: Run build
+      - name: Build the project
+        run: npm run build
+
+      # Step 7: Upload build artifacts to Artifactory
+      - name: Upload build output to Artifactory
+        run: |
+          jfrog rt upload "dist/**/*" "cli-npm/test-red/" \
+            --build-name=my-npm-build \
+            --build-number=${{ github.run_number }}
+
+      # Step 8: Publish Build Info to Artifactory
+      - name: Publish Build Info
+        run: |
+          jfrog rt build-publish my-npm-build ${{ github.run_number }}
