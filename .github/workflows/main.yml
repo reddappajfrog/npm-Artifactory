@@ -39,6 +39,15 @@ jobs:
             --password=${{ secrets.JFROG_PASSWORD }} \
             --interactive=false
 
+      # Step 5: Configure npm to use JFrog Artifactory
+      - name: Configure npm registry
+        run: |
+          jf npm-config \
+            --repo-resolve=cli-npm-remote \
+            --repo-deploy=cli-npm \
+            --server-id-resolve=artifactory-server \
+            --server-id-deploy=artifactory-server
+
       # Step 4: Install dependencies
       - name: Install dependencies
         run: jf npm install
