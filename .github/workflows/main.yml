@@ -45,7 +45,7 @@ jobs:
       # Step 6: Configure JFrog CLI (explicitly)
       - name: Configure JFrog CLI
         run: |
-          jfrog rt c add artifactory-server \
+          jf rt c add artifactory-server \
             --url=${{ secrets.JFROG_URL }} \
             --user=${{ secrets.JFROG_USERNAME }} \
             --password=${{ secrets.JFROG_PASSWORD }} \
@@ -54,7 +54,7 @@ jobs:
       # Step 7: Upload build output to Artifactory
       - name: Upload build output to Artifactory
         run: |
-          jfrog rt upload "dist/**/*" "cli-npm/test-red/" \
+          jf rt upload "dist/**/*" "cli-npm/test-red/" \
             --build-name=my-npm-build \
             --build-number=${{ github.run_number }} \
             --server-id=artifactory-server
@@ -62,4 +62,4 @@ jobs:
       # Step 8: Publish Build Info
       - name: Publish Build Info
         run: |
-          jfrog rt build-publish my-npm-build ${{ github.run_number }}
+          jf rt build-publish my-npm-build ${{ github.run_number }}
