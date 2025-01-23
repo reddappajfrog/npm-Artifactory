@@ -39,7 +39,8 @@ jobs:
         run: |
           # Add Artifactory npm registry configuration
           jfrog rt npm-config \
-            --repo=your-npm-repo \
+            --repo-resolve=your-npm-repo \
+            --repo-deploy=your-npm-repo \
             --server-id-resolve=artifactory-server \
             --server-id-deploy=artifactory-server
 
