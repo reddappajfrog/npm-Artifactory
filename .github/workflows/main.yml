@@ -59,7 +59,7 @@ jobs:
    
       # Step X: Upload artifacts to GitHub
       - name: Upload build artifacts to GitHub
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: build-artifacts
           path: dist/**/* # Path to the build artifacts      
