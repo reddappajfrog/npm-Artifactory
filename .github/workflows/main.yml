@@ -57,7 +57,12 @@ jobs:
         run: jf npm run build
 
    
-      
+      # Step X: Upload artifacts to GitHub
+      - name: Upload build artifacts to GitHub
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifacts
+          path: dist/**/* # Path to the build artifacts      
 
       # Step 7: Upload build output to Artifactory
       - name: Upload build output to Artifactory
