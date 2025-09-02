@@ -35,8 +35,8 @@ jobs:
       - name: Configure npm registry
         run: |
           jf npm-config \
-            --repo-resolve=gaction \
-            --repo-deploy=gaction \
+            --repo-resolve=gaction-npm \
+            --repo-deploy=gaction-npm \
             --server-id-resolve=artifactory-server \
             --server-id-deploy=artifactory-server
       # Step 4: Install dependencies
