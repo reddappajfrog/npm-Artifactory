@@ -54,7 +54,7 @@ jobs:
       # Step 7: Upload build output to Artifactory
       - name: Upload build output to Artifactory
         run: |
-          jf rt u "dist/**/*" "cli-npm" \
+          jf rt u "dist/**/*" "gaction-npm" \
             --build-name=my-npm-build \
             --build-number=${{ github.run_number }} \
             --server-id=artifactory-server
