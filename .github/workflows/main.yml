@@ -35,8 +35,8 @@ jobs:
       - name: Configure npm registry
         run: |
           jf npm-config \
-            --repo-resolve=alex-npm-remote \
-            --repo-deploy=cli-npm \
+            --repo-resolve=gaction \
+            --repo-deploy=gaction \
             --server-id-resolve=artifactory-server \
             --server-id-deploy=artifactory-server
       # Step 4: Install dependencies
